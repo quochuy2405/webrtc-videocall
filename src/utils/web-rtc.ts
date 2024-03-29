@@ -20,7 +20,7 @@ export class WebRTCVideoCall {
 		this.localStream = null;
 		this.remoteStream = null;
 		this.peerConnection = null;
-		this.socket = new WebSocket("wss://localhost:8080"); // Thay đổi URL WebSocket tùy theo cấu hình máy chủ của bạn
+		this.socket = new WebSocket("wss://192.168.1.8:8080"); // Thay đổi URL WebSocket tùy theo cấu hình máy chủ của bạn
 
 		this.socket.onopen = () => {
 			console.log("Connected to WebSocket server");
