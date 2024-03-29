@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="WebRTC Video Call App" />
+  <title>WebRTC Video Call</title>
+  </head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+        console.log('Permission granted');
+      })
+      .catch(error => {
+        console.error('Permission denied:', error);
+      });
+  </script>
+  </body>
+
+</html>
