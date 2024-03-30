@@ -22,7 +22,7 @@ const VideoCallComponent: React.FC = () => {
 			<h1>WebRTC Video Call</h1>
 			<button onClick={() => handleSelectUser("0001")}>User1</button>
 			<button onClick={() => handleSelectUser("0002")}>User2</button>
-			<div>
+			<div style={{ display: "flex", flexDirection: "column" }}>
 				<video
 					style={{ width: "400px", height: "400px" }}
 					ref={localVideoRef}

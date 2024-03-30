@@ -21,7 +21,8 @@ export class WebRTCVideoCall {
 	remoteVideoElement: HTMLVideoElement;
 	localStream: MediaStream | null;
 	remoteStream: MediaStream | null;
-	peerConnection: RTCPeerConnection | null;
+	localPeerConnection: RTCPeerConnection | null;
+	remotePeerConnection: RTCPeerConnection | null;
 	userId: string | null;
 
 	constructor(
@@ -34,7 +35,8 @@ export class WebRTCVideoCall {
 		this.userId = userId;
 		this.localStream = null;
 		this.remoteStream = null;
-		this.peerConnection = null;
+		this.localPeerConnection = null;
+		this.remotePeerConnection = null;
 	}
 
 	async start(): Promise<void> {
@@ -42,33 +44,46 @@ export class WebRTCVideoCall {
 			this.localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 			this.localVideoElement.srcObject = this.localStream;
 
-			this.peerConnection = new RTCPeerConnection(servers);
+			this.localPeerConnection = new RTCPeerConnection();
 			this.localStream.getTracks().forEach((track) => {
-				this.localStream && this.peerConnection!.addTrack(track, this.localStream);
+				this.localStream && this.localPeerConnection!.addTrack(track, this.localStream);
 			});
 
-			this.peerConnection.ontrack = (event) => {
+			this.localPeerConnection.ontrack = (event) => {
 				this.remoteStream = event.streams[0];
 				this.remoteVideoElement.srcObject = this.remoteStream;
 			};
 
-			this.peerConnection.onicecandidate = (event) => {
+			this.localPeerConnection.onicecandidate = (event) => {
 				if (event.candidate) {
 					this.sendIceCandidate(event.candidate);
 				}
 			};
 
-			const offer = await this.peerConnection.createOffer();
-			await this.peerConnection.setLocalDescription(offer);
+			const offer = await this.localPeerConnection.createOffer();
+			await this.localPeerConnection.setLocalDescription(offer);
 			this.sendOffer(offer);
 
 			const dbOfferRef = ref(database, `offer`);
 			const dbAnswerRef = ref(database, `answer`);
+			const dbCandidaterRef = ref(database, `candidate`);
 			onValue(dbOfferRef, (snapshot) => {
 				if (snapshot.exists()) {
 					Object.entries(snapshot.val()).forEach(([key, value]: any) => {
 						if (key !== this.userId) {
 							this.handleOffer(JSON.parse(value));
+						}
+					});
+				} else {
+					console.log("No data available");
+				}
+			});
+
+			onValue(dbCandidaterRef, (snapshot) => {
+				if (snapshot.exists()) {
+					Object.entries(snapshot.val()).forEach(([key, value]: any) => {
+						if (key !== this.userId) {
+							this.handleIceCandidate(JSON.parse(value));
 						}
 					});
 				} else {
@@ -95,20 +110,14 @@ export class WebRTCVideoCall {
 
 	async handleOffer(offer: RTCSessionDescriptionInit): Promise<void> {
 		try {
-			this.peerConnection = new RTCPeerConnection(servers);
-			this.peerConnection.ontrack = (event) => {
+			this.remotePeerConnection = new RTCPeerConnection();
+			this.remotePeerConnection.ontrack = (event) => {
 				this.remoteStream = event.streams[0];
 				this.remoteVideoElement.srcObject = this.remoteStream;
 			};
-
-			this.peerConnection.onicecandidate = (event) => {
-				if (event.candidate) {
-					this.sendIceCandidate(event.candidate);
-				}
-			};
-			await this.peerConnection.setRemoteDescription(offer);
-			const answer = await this.peerConnection.createAnswer();
-			await this.peerConnection.setLocalDescription(answer);
+			await this.remotePeerConnection.setRemoteDescription(offer);
+			const answer = await this.remotePeerConnection.createAnswer();
+			await this.remotePeerConnection.setLocalDescription(answer);
 			this.sendAnswer(answer);
 		} catch (error) {
 			console.error("Error accepting offer:", error);
@@ -117,15 +126,7 @@ export class WebRTCVideoCall {
 	async handleAnswer(answer: RTCSessionDescriptionInit): Promise<void> {
 		try {
 			console.log("answer", answer);
-			await this.peerConnection!.setRemoteDescription(answer);
-			// Kiểm tra xem kết nối có ở trong trạng thái "stable" không
-			if (this.peerConnection!.signalingState === "stable") {
-				// Nếu ở trong trạng thái stable, gọi setRemoteDescription
-			} else {
-				// Nếu không ở trong trạng thái stable, có thể chờ một chút và thử lại sau
-				console.log("Not in stable signaling state, retrying later...");
-				// Hoặc xử lý theo cách khác tùy thuộc vào logic ứng dụng của bạn
-			}
+			await this.localPeerConnection!.setRemoteDescription(answer);
 		} catch (error) {
 			console.error("Error setting remote description:", error);
 		}
@@ -133,8 +134,8 @@ export class WebRTCVideoCall {
 
 	async handleIceCandidate(candidate: RTCIceCandidate): Promise<void> {
 		try {
-			if (this.peerConnection) {
-				await this.peerConnection.addIceCandidate(candidate);
+			if (this.remotePeerConnection) {
+				await this.remotePeerConnection.addIceCandidate(candidate);
 			}
 		} catch (error) {
 			console.error("Error adding ICE candidate:", error);
@@ -166,9 +167,13 @@ export class WebRTCVideoCall {
 	}
 
 	hangUp(): void {
-		if (this.peerConnection) {
-			this.peerConnection.close();
-			this.peerConnection = null;
+		if (this.localPeerConnection) {
+			this.localPeerConnection.close();
+			this.localPeerConnection = null;
+		}
+		if (this.remotePeerConnection) {
+			this.remotePeerConnection.close();
+			this.remotePeerConnection = null;
 		}
 		if (this.localStream) {
 			this.localStream.getTracks().forEach((track) => track.stop());
