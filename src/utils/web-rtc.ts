@@ -85,6 +85,30 @@ export class WebRTCVideoCall {
 			console.error("Error starting screen sharing:", error);
 		}
 	}
+	async toggleAudio(): Promise<void> {
+		try {
+			if (this.localStream) {
+				const audioTrack = this.localStream.getAudioTracks()[0];
+				if (audioTrack) {
+					audioTrack.enabled = !audioTrack.enabled;
+				}
+			}
+		} catch (error) {
+			console.error("Error toggling audio:", error);
+		}
+	}
+	async toggleVideo(): Promise<void> {
+		try {
+			if (this.localStream) {
+				const videoTrack = this.localStream.getVideoTracks()[0];
+				if (videoTrack) {
+					videoTrack.enabled = !videoTrack.enabled;
+				}
+			}
+		} catch (error) {
+			console.error("Error toggling video:", error);
+		}
+	}
 	async handleIceCandidate(candidate: RTCIceCandidate): Promise<void> {
 		try {
 			// console.log("Nhận được candidate");
