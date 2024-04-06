@@ -21,7 +21,7 @@
       "@/styles/*": ["./src/styles/*"],
       "@/types/*": ["./src/types/*"],
       "@/assets/*": ["./src/assets/*"],
-      "@/utils/*": ["./src/utils/*"],
+      "@/modules/*": ["src/modules/*"],
       "@/helpers/*": ["./src/helpers/*"],
       "@/constants/*": ["./src/constants/*"],
       "@/animations/*": ["./src/animations/*"],
