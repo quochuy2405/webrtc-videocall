@@ -4,7 +4,7 @@ import ChatBar from "./ChatBar";
 
 VideoContent.propTypes = {};
 
-function VideoContent(props) {
+function VideoContent() {
   return (
     <div className="flex w-full gap-[4%] my-5">
       <div className="w-[65%]">
