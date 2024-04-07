@@ -1,52 +1,30 @@
 {
-	"name": "my-app",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"@testing-library/jest-dom": "^5.14.1",
-		"@testing-library/react": "^13.0.0",
-		"@testing-library/user-event": "^13.2.1",
-		"@types/jest": "^27.0.1",
-		"@types/node": "^16.7.13",
-		"@types/react": "^18.0.0",
-		"@types/react-dom": "^18.0.0",
-		"firebase": "^10.10.0",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.22.3",
-		"react-scripts": "5.0.1",
-		"typescript": "^4.4.2",
-		"uuid": "^9.0.1",
-		"web-vitals": "^2.1.0"
-	},
-	"scripts": {
-		"dev": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"@types/uuid": "^9.0.8",
-		"prettier": "^3.2.5",
+  "name": "video-call-rtc",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "react": "^18",
+    "react-dom": "^18",
+    "next": "14.1.4",
+    "firebase": "^10.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "eslint": "^8",
+    "prettier": "^3.2.5",
 		"prettier-plugin-tailwindcss": "^0.5.13",
-		"tailwindcss": "^3.4.3"
-	}
+    "eslint-config-next": "14.1.4"
+  }
 }
