@@ -5,7 +5,7 @@ import React from "react";
 
 const Content = () => {
   return (
-    <div className="m-5 w-full">
+    <div className="m-5 bg-white-100 grow">
       <div className="w-full">
         <ContentHeader />
       </div>

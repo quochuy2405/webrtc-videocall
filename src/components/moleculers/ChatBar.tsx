@@ -1,4 +1,6 @@
 import React from 'react'
+import { RiSendPlaneFill } from "react-icons/ri";
+
 
 const ChatBar = () => {
   return (
@@ -21,7 +23,7 @@ const ChatBar = () => {
             className="p-3 w-full absolute"
           />
           <div className=" relative bottom-[-10px]">
-            {/* <SendIcon /> */}
+            <RiSendPlaneFill />
           </div>
         </div>
       </div>

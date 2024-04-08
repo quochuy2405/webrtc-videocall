@@ -1,7 +1,11 @@
 import React from "react";
-// import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-// import LogoutIcon from '@mui/icons-material/Logout';
-// import NightlightRoundIcon from '@mui/icons-material/NightlightRound';
+import { GoHome } from "react-icons/go";
+import { IoVideocam } from "react-icons/io5";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { IoNotifications } from "react-icons/io5";
+import { IoMdSettings } from "react-icons/io";
+import { IoLogOutOutline } from "react-icons/io5";
+import { MdDarkMode } from "react-icons/md";
 
 MenuBar.propTypes = {};
 
@@ -11,18 +15,19 @@ function MenuBar() {
      <div>
      <div>Avatar</div>
       <div className="flex flex-col">
-        {/* <FiberManualRecordIcon />
-        <FiberManualRecordIcon />
-        <FiberManualRecordIcon />
-        <FiberManualRecordIcon /> */}
+        <GoHome />
+        <IoVideocam />
+        <FaRegCalendarAlt />
+        <IoNotifications />
+        <IoMdSettings />
       </div>
      </div>
       <div>
         <div>
-          {/* <LogoutIcon /> */}
+          <IoLogOutOutline />
         </div>
         <div>
-          {/* <NightlightRoundIcon /> */}
+          <MdDarkMode />
         </div>
       </div>
     </div>

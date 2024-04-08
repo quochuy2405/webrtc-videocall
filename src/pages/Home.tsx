@@ -5,7 +5,6 @@ const Home = () => {
   return (
     <div className="flex h-screen gap-3">
       <MenuBar />
-      {/* <Content className="bg-white-100 grow" /> */}
       <Content/>
     </div>
   );
