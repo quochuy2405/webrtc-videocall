@@ -12,26 +12,26 @@ ControlMenu.propTypes = {};
 function ControlMenu() {
   return (
     <div className="flex justify-center p-5 bg-[#F5F5FD] gap-[3%]">
-      <div className="p-2 bg-[#E7E3FA] rounded-lg">
-        <MdKeyboardVoice color ='#8871E' />
+      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
+         <MdKeyboardVoice color ='#8871E' size={'25px'}  />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg">
-        <MdOutlineVolumeOff color ='#8871E' />
+      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
+         <MdOutlineVolumeOff color ='#8871E' size={'25px'}  />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg">
-        <IoVideocam color ='#8871E' />
+      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer" >
+        <IoVideocam color ='#8871E' size={'25px'}  />
       </div>
-      <div className="p-2 text-center bg-[#8871E6] w-[12%] rounded-lg">
-        <IoCall color ='white' />
+      <div className="p-2 text-center bg-[#8871E6] w-[12%] rounded-lg cursor-pointer grid place-items-center">
+        <IoCall color ='white' size={'25px'}  />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg">
-        <LuPencilLine color ='#8871E'  />
+      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
+         <LuPencilLine color ='#8871E' size={'25px'}  />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg">
-        <MdFullscreen color ='#8871E' />
+      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
+         <MdFullscreen color ='#8871E' size={'25px'}  />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg">
-        <IoIosMore color ='#8871E'  />
+      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer ">
+        <IoIosMore color ='#8871E' size={'25px'}  />
       </div>
     </div>
   );
