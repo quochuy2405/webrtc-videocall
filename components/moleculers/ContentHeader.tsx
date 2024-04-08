@@ -1,4 +1,6 @@
 import React from "react";
+import { MdFiberManualRecord } from "react-icons/md";
+
 
 ContentHeader.propTypes = {};
 
@@ -10,7 +12,7 @@ function ContentHeader() {
         <div className="flex justify-between">
           <div className="flex">
             <span className="mr-[6%] flex rounded-2xl border-2 border-red-400 p-2 text-sm font-bold">
-              {/* <FiberManualRecordIcon sx={{ color: 'rgba(255, 0, 0, 0.5)' }}/> */}
+              <MdFiberManualRecord color='rgba(255, 0, 0, 0.5)'/>
               02:22:05
             </span>
             <span className=" m-auto cursor-pointer rounded-md bg-red-400 px-2 py-2 text-xs font-bold text-white hover:bg-red-500">
