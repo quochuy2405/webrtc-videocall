@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import { MdKeyboardVoice } from "react-icons/md";
 import { MdOutlineVolumeOff } from "react-icons/md";
 import { IoVideocam } from "react-icons/io5";
@@ -6,32 +7,46 @@ import { IoCall } from "react-icons/io5";
 import { LuPencilLine } from "react-icons/lu";
 import { MdFullscreen } from "react-icons/md";
 import { IoIosMore } from "react-icons/io";
+import { IoVideocamOff } from "react-icons/io5";
 
-ControlMenu.propTypes = {};
+interface Props {
+  onOpenCam: (open: boolean) => void;
+}
 
-function ControlMenu() {
+
+const ControlMenu:React.FC<Props> = ({onOpenCam}) =>
+{
+  const [isOpenCam, setIsOpenCam] = useState(false);
+
   return (
-    <div className="flex justify-center p-5 bg-[#F5F5FD] gap-[3%]">
-      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
-         <MdKeyboardVoice color ='#8871E' size={'25px'}  />
+    <div className="flex justify-center gap-[3%] bg-[#F5F5FD] p-5">
+      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
+        <MdKeyboardVoice color="#8871E" size={"25px"} />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
-         <MdOutlineVolumeOff color ='#8871E' size={'25px'}  />
+      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
+        <MdOutlineVolumeOff color="#8871E" size={"25px"} />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer" >
-        <IoVideocam color ='#8871E' size={'25px'}  />
+      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
+        <IoVideocamOff
+          color="#8871E"
+          size={"25px"}
+          onClick={() => {
+            setIsOpenCam(!isOpenCam);
+            onOpenCam(isOpenCam);
+          }}
+        />
       </div>
-      <div className="p-2 text-center bg-[#8871E6] w-[12%] rounded-lg cursor-pointer grid place-items-center">
-        <IoCall color ='white' size={'25px'}  />
+      <div className="grid w-[12%] cursor-pointer place-items-center rounded-lg bg-[#8871E6] p-2 text-center">
+        <IoCall color="white" size={"25px"} />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
-         <LuPencilLine color ='#8871E' size={'25px'}  />
+      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
+        <LuPencilLine color="#8871E" size={"25px"} />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer">
-         <MdFullscreen color ='#8871E' size={'25px'}  />
+      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
+        <MdFullscreen color="#8871E" size={"25px"} />
       </div>
-      <div className="p-2 bg-[#E7E3FA] rounded-lg cursor-pointer ">
-        <IoIosMore color ='#8871E' size={'25px'}  />
+      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2 ">
+        <IoIosMore color="#8871E" size={"25px"} />
       </div>
     </div>
   );
