@@ -43,7 +43,6 @@ const Page = () => {
           Object.entries(snapshot.val()).forEach(([key, value]: any) => {
             const isOwner = id.includes("-owner");
             if (isOwner && key.includes("-paticipant")) {
-              alert(key);
               webRTCVideoCallRef.current!.handleAnswer(JSON.parse(value));
             }
           });
@@ -59,7 +58,9 @@ const Page = () => {
       const id = localStorage.getItem("@id") as string;
       handleGetOffer(room, id);
     }, 2000);
-    // return () => localStorage.clear();
+    return () => {
+      webRTCVideoCallRef.current?.hangUp();
+    };
   }, []);
   const handleGetOffer = (room: string, id?: string) => {
     const dbOfferRef = ref(database, `rooms/${room}/offer`);

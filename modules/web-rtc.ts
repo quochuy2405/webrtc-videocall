@@ -161,6 +161,7 @@ export class WebRTCVideoCall {
   }
 
   hangUp(): void {
+    set(ref(database, `rooms/${this.roomId}`), null);
     if (this.localPeerConnection) {
       this.localPeerConnection.close();
       this.localPeerConnection = null;
@@ -169,6 +170,7 @@ export class WebRTCVideoCall {
       this.localStream.getTracks().forEach((track) => track.stop());
       this.localStream = null;
     }
+
     this.localVideoElement.srcObject = null;
     this.remoteVideoElement.srcObject = null;
   }
