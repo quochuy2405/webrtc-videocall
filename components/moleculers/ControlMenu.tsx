@@ -1,38 +1,48 @@
 "use client";
-import React, { useState } from "react";
-import { MdKeyboardVoice } from "react-icons/md";
-import { MdOutlineVolumeOff } from "react-icons/md";
-import { IoVideocam } from "react-icons/io5";
-import { IoCall } from "react-icons/io5";
-import { LuPencilLine } from "react-icons/lu";
-import { MdFullscreen } from "react-icons/md";
+import React from "react";
+import { BsMicFill, BsMicMuteFill } from "react-icons/bs";
 import { IoIosMore } from "react-icons/io";
-import { IoVideocamOff } from "react-icons/io5";
+import { IoCall, IoVideocam, IoVideocamOff } from "react-icons/io5";
+import { LuPencilLine } from "react-icons/lu";
+import { MdFullscreen, MdOutlineVolumeOff } from "react-icons/md";
 
 interface Props {
-  onOpenCam: (open: boolean) => void;
+  onToggleCamera: () => void;
+  onToggleMic: () => void;
+  onToggleSpeaker: () => void;
+  isCamera: boolean;
+  isMuteMic: boolean;
 }
 
-const ControlMenu: React.FC<Props> = ({ onOpenCam }) => {
-  const [isOpenCam, setIsOpenCam] = useState(false);
-
+const ControlMenu: React.FC<Props> = ({
+  onToggleCamera,
+  onToggleMic,
+  onToggleSpeaker,
+  isCamera,
+  isMuteMic,
+}) => {
   return (
     <div className="flex justify-center gap-[3%] bg-[#F5F5FD] p-5">
-      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
-        <MdKeyboardVoice color="#8871E" size={"25px"} />
-      </div>
-      <div className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2">
-        <MdOutlineVolumeOff color="#8871E" size={"25px"} />
+      <div
+        className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2"
+        onClick={onToggleMic}
+      >
+        {!isMuteMic && <BsMicFill color="#8871E" size={"25px"} />}
+        {isMuteMic && <BsMicMuteFill color="#8871E" size={"25px"} />}
       </div>
       <div
         className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2"
-        onClick={() => {
-          setIsOpenCam(!isOpenCam);
-          onOpenCam(isOpenCam);
-        }}
+        onClick={onToggleSpeaker}
       >
-        {isOpenCam ?
-        <IoVideocamOff color="#8871E" size={"25px"} /> : <IoVideocam color="#8871E" size={"25px"}/>}
+        {<MdOutlineVolumeOff color="#8871E" size={"25px"} />}
+        {/* {!isMuteMic && <MdOutlineVolumeMute color="#8871E" size={"25px"} />} */}
+      </div>
+      <div
+        className="cursor-pointer rounded-lg bg-[#E7E3FA] p-2"
+        onClick={onToggleCamera}
+      >
+        {!isCamera && <IoVideocamOff color="#8871E" size={"25px"} />}
+        {isCamera && <IoVideocam color="#8871E" size={"25px"} />}
       </div>
       <div className="grid w-[12%] cursor-pointer place-items-center rounded-lg bg-[#8871E6] p-2 text-center">
         <IoCall color="white" size={"25px"} />
