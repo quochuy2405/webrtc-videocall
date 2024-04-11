@@ -3,7 +3,7 @@ import { database } from "./firebase";
 
 export class WebRTCVideoCall {
   localVideoElement: HTMLVideoElement;
-  remoteVideoElements?: HTMLVideoElement[];
+  remoteVideoElement: HTMLVideoElement;
   localStream: MediaStream | null;
   localPeerConnection: RTCPeerConnection | null;
   userId: string | null;
@@ -13,10 +13,10 @@ export class WebRTCVideoCall {
     userId: string,
     roomId: string,
     localVideoElement: HTMLVideoElement,
-    remoteVideoElements?: HTMLVideoElement[],
+    remoteVideoElement: HTMLVideoElement,
   ) {
     this.localVideoElement = localVideoElement;
-    this.remoteVideoElements = remoteVideoElements || [];
+    this.remoteVideoElement = remoteVideoElement;
     this.userId = userId;
     this.roomId = roomId;
     this.localStream = null;
@@ -37,9 +37,8 @@ export class WebRTCVideoCall {
       });
 
       this.localPeerConnection.ontrack = (event) => {
-        this.remoteVideoElements?.forEach((element) => {
-          element.srcObject = event.streams[0];
-        });
+        console.log("event", event);
+        this.remoteVideoElement.srcObject = event.streams[0];
       };
 
       this.localPeerConnection.onicecandidate = (event) => {
@@ -63,19 +62,19 @@ export class WebRTCVideoCall {
       const answer = await this.localPeerConnection!.createAnswer();
       await this.localPeerConnection!.setLocalDescription(answer);
       this.sendAnswer(answer);
+      // console.log("answer được gửi đi ");
     } catch (error) {
       console.error("Error handling offer:", error);
     }
   }
-
   async handleAnswer(answer: RTCSessionDescriptionInit): Promise<void> {
     try {
+      // console.log("Nhận được answer");
       await this.localPeerConnection!.setRemoteDescription(answer);
     } catch (error) {
       console.error("Error setting remote description:", error);
     }
   }
-
   async startScreenSharing() {
     try {
       const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -92,7 +91,6 @@ export class WebRTCVideoCall {
       console.error("Error starting screen sharing:", error);
     }
   }
-
   async toggleAudio(): Promise<void> {
     try {
       if (this.localStream) {
@@ -105,7 +103,6 @@ export class WebRTCVideoCall {
       console.error("Error toggling audio:", error);
     }
   }
-
   async toggleVideo(): Promise<void> {
     try {
       if (this.localStream) {
@@ -118,10 +115,10 @@ export class WebRTCVideoCall {
       console.error("Error toggling video:", error);
     }
   }
-
   async handleIceCandidate(candidate: RTCIceCandidate): Promise<void> {
     try {
-      candidate && (await this.localPeerConnection!.addIceCandidate(candidate));
+      // console.log("Nhận được candidate");
+      await this.localPeerConnection!.addIceCandidate(candidate);
     } catch (error) {
       console.error("Error adding ICE candidate:", error);
     }
@@ -129,8 +126,9 @@ export class WebRTCVideoCall {
 
   sendOffer(offer: RTCSessionDescriptionInit): void {
     try {
+      // console.log("gửi offer đi", offer);
       set(
-        ref(database, `rooms/${this.roomId}/offers/` + this.userId),
+        ref(database, `rooms/${this.roomId}/offer/${this.userId}`),
         JSON.stringify(offer),
       );
     } catch (error) {
@@ -140,8 +138,9 @@ export class WebRTCVideoCall {
 
   sendAnswer(answer: RTCSessionDescriptionInit): void {
     try {
+      // console.log("gửi answer đi", answer);
       set(
-        ref(database, `rooms/${this.roomId}/answers/` + this.userId),
+        ref(database, `rooms/${this.roomId}/answer/${this.userId}`),
         JSON.stringify(answer),
       );
     } catch (error) {
@@ -151,8 +150,9 @@ export class WebRTCVideoCall {
 
   sendIceCandidate(candidate: RTCIceCandidate): void {
     try {
+      // console.log("gửi candidate đi", candidate);
       set(
-        ref(database, `rooms/${this.roomId}/answers/` + this.userId),
+        ref(database, `rooms/${this.roomId}/candidate/${this.userId}`),
         JSON.stringify(candidate),
       );
     } catch (error) {
@@ -170,8 +170,6 @@ export class WebRTCVideoCall {
       this.localStream = null;
     }
     this.localVideoElement.srcObject = null;
-    this.remoteVideoElements?.forEach((element) => {
-      element.srcObject = null;
-    });
+    this.remoteVideoElement.srcObject = null;
   }
 }

@@ -11,27 +11,27 @@ const Page = () => {
   const param = useParams();
   const paticipantsRef = useRef<HTMLVideoElement[]>([]);
   const selfRef = useRef<HTMLVideoElement | null>(null);
+  const connect = useRef(false);
 
   useEffect(() => {
     const room = param["room"] as string;
     const id = localStorage.getItem("@id");
 
-    if (id && selfRef.current && room) {
+    if (id && !connect.current && selfRef.current && room) {
       webRTCVideoCallRef.current = new WebRTCVideoCall(
         id,
         room,
         selfRef.current,
-        paticipantsRef.current,
+        paticipantsRef.current[0],
       );
       webRTCVideoCallRef.current.start();
-      const dbCandidateRef = ref(database, `rooms/${room}/candidates`);
-      const dbAnswerRef = ref(database, `rooms/${room}/answers`);
+      const dbCandidateRef = ref(database, `rooms/${room}/candidate`);
+      const dbAnswerRef = ref(database, `rooms/${room}/answer`);
+
       onValue(dbCandidateRef, (snapshot) => {
         if (snapshot.exists()) {
           Object.entries(snapshot.val()).forEach(([key, value]: any) => {
-            if (key !== id && value) {
-              webRTCVideoCallRef.current!.handleIceCandidate(JSON.parse(value));
-            }
+            webRTCVideoCallRef.current!.handleIceCandidate(JSON.parse(value));
           });
         } else {
           console.log("No candidate available");
@@ -41,7 +41,9 @@ const Page = () => {
       onValue(dbAnswerRef, (snapshot) => {
         if (snapshot.exists()) {
           Object.entries(snapshot.val()).forEach(([key, value]: any) => {
-            if (key !== id && value) {
+            const isOwner = id.includes("-owner");
+            if (isOwner && key.includes("-paticipant")) {
+              alert(key);
               webRTCVideoCallRef.current!.handleAnswer(JSON.parse(value));
             }
           });
@@ -57,13 +59,15 @@ const Page = () => {
       const id = localStorage.getItem("@id") as string;
       handleGetOffer(room, id);
     }, 2000);
+    // return () => localStorage.clear();
   }, []);
   const handleGetOffer = (room: string, id?: string) => {
-    const dbOfferRef = ref(database, `rooms/${room}/offers`);
+    const dbOfferRef = ref(database, `rooms/${room}/offer`);
     onValue(dbOfferRef, (snapshot) => {
       if (snapshot.exists()) {
         Object.entries(snapshot.val()).forEach(([key, value]: any) => {
-          if (key !== id) {
+          const isOwner = id?.includes("-owner");
+          if (!isOwner && key.includes("-owner")) {
             webRTCVideoCallRef.current?.handleOffer(JSON.parse(value));
           }
         });

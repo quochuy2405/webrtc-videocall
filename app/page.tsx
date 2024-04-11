@@ -23,6 +23,7 @@ const Waiting = () => {
     },
   });
   useEffect(() => {
+    localStorage.clear();
     const initializeCamera = async () => {
       try {
         const source = await navigator.mediaDevices.getUserMedia({
@@ -64,10 +65,21 @@ const Waiting = () => {
     // Tuy nhiên, bạn có thể tắt loa bằng cách kiểm soát âm lượng của âm thanh hoặc dùng api media session, nhưng chúng không tắt loa mà chỉ giảm âm lượng hoặc tạm dừng phát.
   };
 
-  const onSubmit = ({ room, nickname }: { room: string; nickname: string }) => {
+  const onSubmit = ({
+    room,
+    nickname,
+    type,
+  }: {
+    room: string;
+    nickname: string;
+    type: "create" | "join";
+  }) => {
     const { randomUUID } = new ShortUniqueId({ length: 10 });
     const id = randomUUID();
-    localStorage.setItem("@id", id);
+    localStorage.setItem(
+      "@id",
+      `${id}-${type === "create" ? "owner" : "paticipant"}`,
+    );
     set(ref(database, "rooms/" + room + "/user/" + id), nickname).then(() => {
       router.push("/join/" + room);
     });
@@ -76,10 +88,7 @@ const Waiting = () => {
   return (
     <div className="flex h-screen">
       <div className="flex w-1/2 items-center justify-center">
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-1/2 flex-col gap-4"
-        >
+        <form className="flex w-1/2 flex-col gap-4">
           <Controller
             name={"room"}
             control={form.control}
@@ -110,10 +119,24 @@ const Waiting = () => {
           />
 
           <button
-            type="submit"
+            onClick={() =>
+              form.handleSubmit((data) =>
+                onSubmit({ ...data, type: "create" }),
+              )()
+            }
+            type="button"
             className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Create room
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              form.handleSubmit((data) => onSubmit({ ...data, type: "join" }))()
+            }
+            className="w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Join
           </button>
         </form>
       </div>
