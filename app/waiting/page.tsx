@@ -7,6 +7,8 @@ import Webcam from "react-webcam";
 
 const Waiting = () => {
   const refVideo = useRef<HTMLVideoElement | null>(null);
+  const [isOpenCam, setIsOpenCam] = useState(false);
+  const webcamRef = React.useRef(null);
 
   useEffect(() => {
     const initializeCamera = async () => {
@@ -25,21 +27,23 @@ const Waiting = () => {
   }, []);
 
   const onOpenCam = (camState: boolean) => {
-    console.log("cam", camState);
+    setIsOpenCam(camState);
   };
 
   return (
     <div className="flex h-screen">
-      <div className="w-1/2 bg-slate-500">LINK</div>
-      <div className="flex w-1/2 flex-col bg-slate-600">
+      <div className="w-1/2 ">LINK</div>
+      <div className="flex w-1/2 flex-col ">
         <div className="flex flex-1 items-center justify-center">
-          <video
-            ref={refVideo}
-            autoPlay
-            playsInline
-            muted
-            className="h-full w-full bg-black"
-          ></video>
+          {isOpenCam && (
+            <Webcam
+            className="w-[100%]"
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            screenshotQuality={1}
+          />
+          )}
         </div>
         <div>
           <ControlMenu onOpenCam={onOpenCam} />
