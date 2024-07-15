@@ -57,11 +57,13 @@ const VideoCallComponent: React.FC = () => {
 	};
 
 	return (
-		<div>
-			<button onClick={() => handleSelectUser("1")}>TURN ON</button>
-			<button onClick={() => handleSelectUser("2")}>PULL</button>
-			<button onClick={() => handleGetOffer("1")}>STREAM</button>
-			<div style={{ display: "flex", flexDirection: "column" }}>
+		<div style={{ height: "100vh", display: "flex", flexDirection: "column", width: "100vw" }}>
+			<div style={{ display: "flex", gap: 10 }}>
+				<button onClick={() => handleSelectUser("1")}>TURN ON</button>
+				<button onClick={() => handleSelectUser("2")}>PULL</button>
+				<button onClick={() => handleGetOffer("1")}>STREAM</button>
+			</div>
+			<div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
 				{/* <video
 					style={{ width: "400px", height: "400px" }}
 					ref={localVideoRef}
