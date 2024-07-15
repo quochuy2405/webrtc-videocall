@@ -13,9 +13,7 @@ function VideoCall() {
         <div className="h-[300px] w-[30%] rounded-lg border-2">45</div>
         <div className="h-[300px] w-[30%] rounded-lg border-2">56</div>
       </div>
-      <div>
-        <ControlMenu />
-      </div>
+      <div>{/* <ControlMenu /> */}</div>
     </div>
   );
 }
