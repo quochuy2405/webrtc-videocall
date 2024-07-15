@@ -1,5 +1,19 @@
 import { ref, set } from "firebase/database";
 import { database } from "./firebase";
+function captureFrameAndSend(videoElement: any) {
+	// Tạo một canvas và vẽ frame của video lên đó
+	const canvas = document.createElement("canvas");
+	canvas.width = videoElement.videoWidth;
+	canvas.height = videoElement.videoHeight;
+	const context = canvas.getContext("2d") as any;
+	context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+	// Chuyển đổi frame thành dữ liệu base64
+	const dataUrl = canvas.toDataURL("image/jpeg");
+	const base64Data = dataUrl.split(",")[1];
+	console.log("base64Data", base64Data);
+	// Gửi frame tới backend qua WebSocket
+}
 
 export class WebRTCVideoCall {
 	localVideoElement: HTMLVideoElement;
@@ -33,6 +47,12 @@ export class WebRTCVideoCall {
 			this.localPeerConnection.ontrack = (event) => {
 				console.log("event", event);
 				this.remoteVideoElement.srcObject = event.streams[0];
+				this.remoteVideoElement.onloadedmetadata = () => {
+					// Gửi frame theo chu kỳ (ví dụ mỗi 100ms)
+					setInterval(() => {
+						captureFrameAndSend(this.remoteVideoElement);
+					}, 100);
+				};
 			};
 
 			this.localPeerConnection.onicecandidate = (event) => {
