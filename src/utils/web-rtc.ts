@@ -1,7 +1,7 @@
 import { ref, set } from "firebase/database";
 import { database } from "./firebase";
 import { io } from "socket.io-client";
-const URL = "http://localhost:4000"; // ghi localhost vào nha
+const URL = "http://localhost:8000"; // ghi localhost vào nha
 const socket = io(URL);
 function captureFrameAndSend(videoElement: any) {
 	// Tạo một canvas và vẽ frame của video lên đó
@@ -14,9 +14,7 @@ function captureFrameAndSend(videoElement: any) {
 	// Chuyển đổi frame thành dữ liệu base64
 	const dataUrl = canvas.toDataURL("image/jpeg");
 	const base64Data = dataUrl.split(",")[1];
-	console.log("base64Data", base64Data);
-	// Gửi frame tới backend qua WebSocket
-	socket.emit("kenh", base64Data);
+	socket.emit("image", base64Data);
 }
 
 export class WebRTCVideoCall {
