@@ -3,14 +3,14 @@ import { getDatabase } from "firebase/database";
 
 // Your Firebase configuration
 const firebaseConfig = {
-	apiKey: "AIzaSyCWo1Esj22l97An3e4lyjeEPJxWjrEWjK0",
-	authDomain: "rtc-web-15f4b.firebaseapp.com",
-	databaseURL: "https://rtc-web-15f4b-default-rtdb.firebaseio.com/",
-	projectId: "rtc-web-15f4b",
-	storageBucket: "rtc-web-15f4b.appspot.com",
-	messagingSenderId: "196388121406",
-	appId: "1:196388121406:web:ffcbdf602c5bef65459a6f",
-	measurementId: "G-EM13DNM8VL", // This is optional, only if you are using Firebase analytics
+  apiKey: "AIzaSyAD6JB0uLp_0HQW7uGcGzVInR9WfQqhqgY",
+  authDomain: "callvideo-76bd2.firebaseapp.com",
+  databaseURL: "https://callvideo-76bd2-default-rtdb.firebaseio.com",
+  projectId: "callvideo-76bd2",
+  storageBucket: "callvideo-76bd2.appspot.com",
+  messagingSenderId: "87550672815",
+  appId: "1:87550672815:web:92d3c39a3295ef5898395a",
+  measurementId: "G-H4DBXQFCGV",
 };
 
 // Initialize Firebase
