@@ -58,19 +58,18 @@ const VideoCallComponent: React.FC = () => {
 
 	return (
 		<div>
-			<h1>WebRTC Video Call</h1>
 			<button onClick={() => handleSelectUser("1")}>TURN ON</button>
 			<button onClick={() => handleSelectUser("2")}>PULL</button>
 			<button onClick={() => handleGetOffer("1")}>STREAM</button>
 			<div style={{ display: "flex", flexDirection: "column" }}>
-				<video
+				{/* <video
 					style={{ width: "400px", height: "400px" }}
 					ref={localVideoRef}
 					autoPlay
 					playsInline
-				/>
+				/> */}
 				<video
-					style={{ width: "400px", height: "400px" }}
+					style={{ width: "100%", height: "100%" }}
 					ref={remoteVideoRef}
 					autoPlay
 					playsInline
