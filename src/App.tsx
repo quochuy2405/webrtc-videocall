@@ -63,15 +63,15 @@ const VideoCallComponent: React.FC = () => {
 				<button onClick={() => handleSelectUser("2")}>PULL</button>
 				<button onClick={() => handleGetOffer("1")}>STREAM</button>
 			</div>
-			<div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
-				{/* <video
-					style={{ width: "400px", height: "400px" }}
+			<div style={{ display: "flex", flex: 1 }}>
+				<video
+					style={{ flex: 1, height: "50vh", background: "gray" }}
 					ref={localVideoRef}
 					autoPlay
 					playsInline
-				/> */}
+				/>
 				<video
-					style={{ width: "100%", height: "100%" }}
+					style={{ flex: 1, height: "50vh", background: "gray" }}
 					ref={remoteVideoRef}
 					autoPlay
 					playsInline
