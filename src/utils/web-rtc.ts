@@ -14,7 +14,7 @@ function captureFrameAndSend(videoElement: any) {
 	// Chuyển đổi frame thành dữ liệu base64
 	const dataUrl = canvas.toDataURL("image/jpeg");
 	const base64Data = dataUrl.split(",")[1];
-	socket.emit("image", base64Data);
+	fetch(" http://127.0.0.1:5000/image", { method: "POST", body: JSON.stringify({ base64Data }) });
 }
 
 export class WebRTCVideoCall {
